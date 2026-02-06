@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Tente manter assim
+}
+
+// 1. O PACIENTE (O Centro de Tudo)
+model Patient {
+  id           String        @id @default(uuid())
+  name         String
+  phone        String?
+  email        String?
+  cpf          String?       @unique
+  birthDate    DateTime?
+  createdAt    DateTime      @default(now())
+  appointments Appointment[]
+}
+
+// 2. PROCEDIMENTOS (O que a clínica oferece - ex: Consulta, Limpeza, Exame)
+model Procedure {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  basePrice   Decimal       @db.Decimal(10, 2)
+  duration    Int?          // Duração estimada em minutos
+  appointments Appointment[]
+}
+
+// 3. AGENDAMENTOS (A Agenda)
+model Appointment {
+  id           String    @id @default(uuid())
+  dateTime     DateTime
+  status       String    @default("AGENDADO") // AGENDADO, FINALIZADO, CANCELADO, FALTOU
+  notes        String?
+
+  // Relacionamento com Paciente
+  patientId    String
+  patient      Patient   @relation(fields: [patientId], references: [id])
+
+  // Relacionamento com Procedimento
+  procedureId  String
+  procedure    Procedure @relation(fields: [procedureId], references: [id])
+
+  // Valor final (pode ser diferente do basePrice se houver desconto)
+  finalPrice   Decimal   @db.Decimal(10, 2)
+
+  createdAt    DateTime  @default(now())
+  payment      FinancialRecord?
+}
+
+// 4. FINANCEIRO (Para o Dashboard de Lucro)
+model FinancialRecord {
+  id          String   @id @default(cuid())
+  description String   // <--- Campo Novo (Essencial para saber o que pagou)
+  amount      Decimal
+  type        String   // "INCOME" ou "EXPENSE"
+  status      String   @default("PAID")
+  dueDate     DateTime // <--- Campo Novo (Para ordenar o gráfico)
+
+  // Mantemos o relacionamento com Appointment se quiser vincular
+  appointmentId String? @unique
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+// Adicione ao final do schema.prisma
+model Transaction {
+  id          String   @id @default(cuid())
+  description String   // Ex: "Consulta Dr. Yan"
+  amount      Float    // Valor. Ex: 250.00
+  type        String   // "INCOME" (Entrada) ou "EXPENSE" (Saída)
+  date        DateTime @default(now())
+
+  // Opcional: Ligar ao paciente (deixe comentado se quiser simplificar agora)
+  // patientId   String?
+  // patient     Patient? @relation(fields: [patientId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

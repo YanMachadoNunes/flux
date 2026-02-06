@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db-flux:
+    image: postgres:15
+    container_name: flux_db_container
+    restart: always
+    environment:
+      POSTGRES_USER: yan_flux
+      POSTGRES_PASSWORD: yan_password_123
+      POSTGRES_DB: flux_db_new
+    ports:
+      - "5433:5432"
+    ## volumes:
+    # Voltamos para o padrão /data e um volume virgem (v5)
+    ##docker-compose down   - flux_data_v5:/var/lib/postgresql/data
+
+volumes:
+  flux_data_v5:

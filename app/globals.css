@@ -1,26 +1,136 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Cores do Tema - Light Mode (Tons de Vinho/Creme) */
+  --bg-primary: #f9f5f2;
+  --bg-secondary: #f4efeb;
+  --bg-card: #ffffff;
+  --bg-hover: #fffaf7;
+  
+  --text-primary: #2d1a1a;
+  --text-secondary: #634d4d;
+  --text-muted: #8c7b7b;
+  
+  --border-color: #e5dada;
+  --border-light: #f4efeb;
+  
+  --accent-primary: #4a0e0e;
+  --accent-secondary: #8b1e1e;
+  --accent-hover: #6e1b1b;
+  
+  --success: #059669;
+  --success-bg: #d1fae5;
+  --error: #dc2626;
+  --error-bg: #fee2e2;
+  --info: #2563eb;
+  --info-bg: #dbeafe;
+  
+  --shadow-color: rgba(74, 14, 14, 0.05);
+  --shadow-color-strong: rgba(74, 14, 14, 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  /* Cores do Tema - Dark Mode (Tons Escuros de Vinho) */
+  --bg-primary: #1a1212;
+  --bg-secondary: #251a1a;
+  --bg-card: #2d2020;
+  --bg-hover: #3d2a2a;
+  
+  --text-primary: #f4efeb;
+  --text-secondary: #c9b8b8;
+  --text-muted: #9c8a8a;
+  
+  --border-color: #3d2a2a;
+  --border-light: #251a1a;
+  
+  --accent-primary: #c44444;
+  --accent-secondary: #d66666;
+  --accent-hover: #e88888;
+  
+  --success: #34d399;
+  --success-bg: #064e3b;
+  --error: #f87171;
+  --error-bg: #7f1d1d;
+  --info: #60a5fa;
+  --info-bg: #1e3a8a;
+  
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-color-strong: rgba(0, 0, 0, 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilos Globais de Inputs */
+input, select, textarea {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 3px rgba(139, 30, 30, 0.1);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  box-shadow: 0 0 0 3px rgba(196, 68, 68, 0.2);
+}
+
+/* Estilos Globais de Botões */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+/* Scrollbar Personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Seleção de Texto */
+::selection {
+  background-color: var(--accent-secondary);
+  color: white;
+}
+
+[data-theme="dark"] ::selection {
+  background-color: var(--accent-primary);
+  color: white;
 }
