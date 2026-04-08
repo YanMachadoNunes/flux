@@ -1,13 +1,14 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Shell } from "./components/Shell"; // Importe a Concha nova
+import { Shell } from "./components/Shell";
 import { ThemeProvider } from "./context/ThemeContext";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Flux | Clínica Experts",
-  description: "Sistema de Gestão",
+  title: "Flux | Gestão de Clínica",
+  description: "Sistema de Gestão de Clínica",
 };
 
 export default function RootLayout({
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <ThemeProvider>
-          <Shell>{children}</Shell>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <Shell>{children}</Shell>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

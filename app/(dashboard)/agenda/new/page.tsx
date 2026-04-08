@@ -11,8 +11,10 @@ export default async function NewAppointmentPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Novo Agendamento</h1>
+      <header className={styles.pageHeader}>
+        <div className={styles.headerLeft}>
+          <h1 className={styles.pageTitle}>Novo Agendamento</h1>
+        </div>
         <Link href="/agenda" className={styles.secondaryButton}>
           Cancelar
         </Link>

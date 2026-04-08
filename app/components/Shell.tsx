@@ -1,11 +1,16 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Sidebar } from "./Sidebar"; // AGORA COM CHAVES PARA BATER COM SEU EXPORT
+import { usePathname } from "next/navigation";
+import { Sidebar } from "./Sidebar";
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
+import { ThemeToggle } from "./ThemeToggle";
+import { Menu } from "lucide-react";
+
+const PUBLIC_PATHS = ["/login", "/register", "/plans"];
 
 function MainContent({ children }: { children: ReactNode }) {
-  const { isCollapsed } = useSidebar();
+  const { toggleMobile, isMobile, isCollapsed } = useSidebar();
 
   return (
     <div
@@ -19,13 +24,61 @@ function MainContent({ children }: { children: ReactNode }) {
       <main
         style={{
           flex: 1,
-          marginLeft: isCollapsed ? "80px" : "260px",
+          marginLeft: isMobile ? 0 : isCollapsed ? "72px" : "260px",
           width: "100%",
           minHeight: "100vh",
-          transition: "margin-left 0.3s ease, background-color 0.3s ease",
+          transition: isMobile ? "none" : "margin-left 0.3s ease",
           overflowX: "hidden",
         }}
       >
+        {/* Topbar */}
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 40,
+            background: "var(--bg-primary)",
+            borderBottom: "1px solid var(--border-color)",
+            padding: "0.6rem 1.25rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+          }}
+        >
+          {isMobile && (
+            <button
+              onClick={toggleMobile}
+              style={{
+                flexShrink: 0,
+                background: "var(--accent-primary)",
+                border: "none",
+                borderRadius: "8px",
+                padding: "0.45rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                boxShadow: "0 2px 8px var(--shadow-color-strong)",
+              }}
+            >
+              <Menu size={20} />
+            </button>
+          )}
+          <span
+            style={{
+              fontSize: "0.82rem",
+              color: "var(--text-muted)",
+              fontWeight: 500,
+            }}
+          >
+            Flux · Clínica Experts
+          </span>
+          <div style={{ marginLeft: "auto" }}>
+            <ThemeToggle />
+          </div>
+        </div>
+
         {children}
       </main>
     </div>
@@ -33,6 +86,11 @@ function MainContent({ children }: { children: ReactNode }) {
 }
 
 export function Shell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+
+  if (isPublic) return <>{children}</>;
+
   return (
     <SidebarProvider>
       <MainContent>{children}</MainContent>

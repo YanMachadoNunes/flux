@@ -1,264 +1,118 @@
 # 🏥 FLUX
 
-**Sistema de Gestão Completo para Clínicas e Consultórios**
+**Sistema de Gestão Inteligente para Clínicas e Consultórios**
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.1.6-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=flat&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat&logo=postgresql)](https://www.postgresql.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.10.2-2D3748?style=flat&logo=prisma)](https://www.prisma.io/)
+O **FLUX** é uma plataforma moderna e de alta performance desenvolvida para otimizar a gestão de clínicas médicas, consultórios e profissionais de saúde. Construído com as tecnologias mais recentes do ecossistema Web, o sistema oferece uma experiência fluida (daí o nome *Flux*) para o gerenciamento de pacientes, agendamentos, procedimentos e finanças.
 
 ---
 
-## 📋 Visão Geral
+## 🚀 Tecnologias de Ponta
 
-O **FLUX** é um sistema de gestão moderno e completo desenvolvido para clínicas médicas, consultórios, dentistas e profissionais de saúde. O sistema oferece uma solução integrada para gerenciamento de pacientes, agendamentos, procedimentos e controle financeiro.
-
-### ✨ Funcionalidades Principais
-
-- 👥 **Gestão de Pacientes** - Cadastro completo com histórico
-- 📅 **Agenda Inteligente** - Visualização em timeline com status
-- 🏥 **Catálogo de Procedimentos** - Serviços com preços e duração
-- 💰 **Controle Financeiro** - Receitas, despesas e fluxo de caixa
-- 📊 **Dashboard Analítico** - KPIs em tempo real
-- 🌙 **Tema Dark/Light** - Interface adaptável
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router & Server Actions)
+- **Frontend:** [React 19](https://react.dev/) com TypeScript
+- **Estilização:** CSS Modules com suporte nativo a temas (Vinho/Creme)
+- **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/) via [Prisma ORM](https://www.prisma.io/)
+- **Gráficos:** [Recharts](https://recharts.org/) para visualização financeira
+- **Validação:** [Zod](https://zod.dev/) para integridade de dados
+- **Testes:** [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
 ---
 
-## 🚀 Tecnologias
+## ✨ Funcionalidades Principais
 
-### Frontend
-- **Next.js 16** - Framework React com App Router
-- **React 19** - Biblioteca de UI
-- **TypeScript** - Tipagem estática
-- **CSS Modules** - Estilização scoped
+### 👥 Gestão de Pacientes
+- Cadastro completo e centralizado.
+- Histórico de agendamentos e fichas detalhadas.
+- Validação inteligente de documentos (CPF).
 
-### Backend
-- **Next.js Server Actions** - API integrada
-- **Prisma ORM** - Mapeamento objeto-relacional
-- **Zod** - Validação de schemas
+### 📅 Agenda Dinâmica
+- Visualização em linha do tempo (Timeline).
+- Status coloridos para fácil identificação (Pendente, Confirmado, Finalizado).
+- Fluxo simplificado para novos agendamentos.
 
-### Banco de Dados
-- **PostgreSQL 15** - Banco relacional
-- **Prisma Client** - Acesso ao banco tipado
+### 💰 Inteligência Financeira
+- Dashboard com KPIs (Receitas, Despesas, Saldo Líquido).
+- Gráficos de evolução de fluxo de caixa.
+- Registro rápido de transações de entrada e saída.
 
-### Infraestrutura
-- **Docker** - Containerização
-- **Jest** - Testes automatizados
-- **ESLint** - Qualidade de código
+### 🏥 Catálogo de Procedimentos
+- Gerenciamento de serviços com preços e durações personalizáveis.
+
+### 🌙 Personalização & Interface
+- Sistema de temas Light e Dark (persistente).
+- Design focado em usabilidade e produtividade.
+- Sidebar colapsável para maior aproveitamento de tela.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📂 Estrutura do Projeto
 
-```
-fluxd/
+```text
 ├── app/
-│   ├── (dashboard)/          # Área logada
-│   │   ├── agenda/           # Módulo de Agenda
-│   │   ├── patients/         # Módulo de Pacientes
-│   │   └── procedures/       # Módulo de Procedimentos
-│   ├── components/           # Componentes reutilizáveis
-│   ├── context/              # Contextos React
-│   ├── financial/            # Módulo Financeiro
-│   ├── lib/                  # Utilitários e Server Actions
-│   ├── settings/             # Configurações
-│   ├── globals.css           # Estilos globais
-│   ├── layout.tsx            # Layout raiz
-│   └── page.tsx              # Dashboard
-├── prisma/
-│   └── schema.prisma         # Schema do banco
-├── docker-compose.yml        # Docker PostgreSQL
-└── package.json
+│   ├── (dashboard)/    # Módulos principais (Agenda, Pacientes, Procedimentos)
+│   ├── components/     # UI Components (Shell, Sidebar, etc.)
+│   ├── context/        # Gerenciamento de Estado (Tema, Sidebar)
+│   ├── financial/      # Módulo Financeiro e Gráficos
+│   ├── lib/            # Server Actions e Integração com Prisma
+│   └── globals.css     # Variáveis CSS e Estilos Globais
+├── prisma/             # Schema e Migrations do Banco de Dados
+├── public/             # Ativos Estáticos
+└── tests/              # Testes Automatizados
 ```
 
 ---
 
-## 🛠️ Instalação
+## 🏁 Como Começar
 
 ### Pré-requisitos
-- Node.js (LTS)
-- Docker e Docker Compose
-- npm ou yarn
+- **Node.js** (LTS recomendado)
+- **Docker** (para o banco de dados PostgreSQL)
 
-### Passo a Passo
+### Instalação e Execução
 
-```bash
-# 1. Clone o repositório
-git clone https://github.com/YanMachadoNunes/flux.git
-cd flux
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-# 2. Instale as dependências
-npm install
+2. **Configure o ambiente:**
+   Crie um arquivo `.env` na raiz:
+   ```env
+   DATABASE_URL="postgresql://yan_flux:yan_password_123@localhost:5433/flux_db_new"
+   ```
 
-# 3. Configure as variáveis de ambiente
-cp .env.example .env
-# Edite o .env e configure DATABASE_URL
+3. **Suba o Banco de Dados (Docker):**
+   ```bash
+   docker-compose up -d
+   ```
 
-# 4. Inicie o banco de dados
-docker-compose up -d
+4. **Prepare o Prisma:**
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev
+   ```
 
-# 5. Gere o cliente Prisma
-npx prisma generate
-
-# 6. Execute as migrações
-npx prisma migrate dev
-
-# 7. Inicie o servidor de desenvolvimento
-npm run dev
-```
-
-Acesse [http://localhost:3000](http://localhost:3000) no navegador.
-
----
-
-## 📝 Configuração
-
-### Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```env
-DATABASE_URL=postgresql://yan_flux:yan_password_123@localhost:5433/flux_db_new
-```
-
-### Docker
-
-O projeto inclui um `docker-compose.yml` configurado com PostgreSQL 15:
-
-```bash
-# Iniciar o banco
-docker-compose up -d
-
-# Parar o banco
-docker-compose down
-```
+5. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+   Acesse: `http://localhost:3000`
 
 ---
 
-## 🧪 Scripts Disponíveis
+## 📖 Documentação Adicional
 
-```bash
-# Desenvolvimento
-npm run dev          # Inicia servidor de desenvolvimento
-
-# Build
-npm run build        # Build para produção
-npm start            # Inicia em modo produção
-
-# Qualidade
-npm run lint         # Executa ESLint
-npm run test         # Executa testes com Jest
-npm run test:watch   # Testes em modo watch
-
-# Banco de dados
-npx prisma generate  # Gera tipos TypeScript
-npx prisma studio    # Interface visual do banco
-```
+Para detalhes técnicos sobre a arquitetura, padrões de CSS e como criar novas funcionalidades, consulte a [Documentação de Arquitetura](./DOCUMENTACAO_ARQUITETURA.md).
 
 ---
 
-## 🗄️ Banco de Dados
+## 🛠️ Scripts Úteis
 
-### Schema
-
-O sistema utiliza PostgreSQL com os seguintes modelos:
-
-- **Patient** - Pacientes
-- **Procedure** - Procedimentos/Serviços
-- **Appointment** - Agendamentos
-- **FinancialRecord** - Registros financeiros
-- **Transaction** - Transações alternativas
-
-### Relacionamentos
-```
-Patient 1:N Appointment N:1 Procedure
-Appointment 1:1 FinancialRecord
-```
+- `npm run dev`: Inicia o ambiente de desenvolvimento.
+- `npm run build`: Gera a versão de produção.
+- `npm run test`: Executa a suíte de testes.
+- `npx prisma studio`: Abre a interface visual para gerenciar o banco de dados.
 
 ---
 
-## 🎨 Funcionalidades Detalhadas
-
-### Dashboard
-- Estatísticas em tempo real
-- Próximo atendimento em destaque
-- Atalhos rápidos
-- Data atual formatada
-
-### Pacientes
-- Cadastro completo (nome, telefone, email, CPF)
-- Listagem ordenada
-- CPF único (validação)
-
-### Agenda
-- Visualização em timeline
-- Status coloridos (Confirmado, Pendente, Finalizado)
-- Agendamento com seleção de paciente
-
-### Financeiro
-- KPIs: Receitas, Despesas, Saldo
-- Gráfico de evolução (Recharts)
-- Registro rápido de transações
-
-### Configurações
-- Tema Light/Dark
-- Persistência no localStorage
-- Dados da clínica
-
----
-
-## 🧪 Testes
-
-O projeto utiliza Jest com React Testing Library:
-
-```bash
-# Executar todos os testes
-npm run test
-
-# Modo watch
-npm run test:watch
-```
-
-### Cobertura de Testes
-- Contextos React
-- Componentes de UI
-- Utilitários
-
----
-
-## 📄 Licença
-
-Este projeto é privado e de uso exclusivo.
-
----
-
-## 👤 Autor
-
-**Yan Machado Nunes**
-
-- GitHub: [@YanMachadoNunes](https://github.com/YanMachadoNunes)
-
----
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Para contribuir:
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
----
-
-## 📞 Suporte
-
-Para suporte ou dúvidas, entre em contato através do GitHub Issues.
-
----
-
-<p align="center">
-  Desenvolvido com ❤️ usando Next.js, React e TypeScript
-</p>
+Desenvolvido por **Yan Machado Nunes**
