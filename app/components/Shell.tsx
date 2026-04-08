@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Sidebar } from "./Sidebar";
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { ThemeToggle } from "./ThemeToggle";
+import { TrialBanner } from "./TrialBanner";
 import { Menu } from "lucide-react";
 
 const PUBLIC_PATHS = ["/login", "/register", "/plans"];
@@ -79,6 +80,7 @@ function MainContent({ children }: { children: ReactNode }) {
           </div>
         </div>
 
+        <TrialBanner />
         {children}
       </main>
     </div>

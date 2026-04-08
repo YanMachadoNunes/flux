@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { Suspense, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { Check, Zap, Crown } from "lucide-react"
+import { Check, Zap, Crown, AlertTriangle } from "lucide-react"
 import styles from "./plans.module.css"
 
 const PLANS = [
@@ -43,9 +43,11 @@ const PLANS = [
   },
 ]
 
-export default function PlansPage() {
+function PlansContent() {
   const { data: session } = useSession()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isExpired = searchParams.get("expired") === "1"
   const [loading, setLoading] = useState<string | null>(null)
   const [cpfCnpj, setCpfCnpj] = useState("")
   const [error, setError] = useState("")
@@ -80,10 +82,21 @@ export default function PlansPage() {
 
   return (
     <div className={styles.page}>
+      {isExpired && (
+        <div className={styles.expiredAlert}>
+          <AlertTriangle size={16} />
+          <span>Seu período de teste encerrou. Assine um plano para continuar usando o Flux.</span>
+        </div>
+      )}
+
       <div className={styles.header}>
-        <h1 className={styles.title}>Escolha seu plano</h1>
+        <h1 className={styles.title}>
+          {isExpired ? "Seu trial expirou" : "Escolha seu plano"}
+        </h1>
         <p className={styles.subtitle}>
-          7 dias grátis · Cancele quando quiser · Sem fidelidade
+          {isExpired
+            ? "Escolha um plano para continuar com acesso completo ao sistema."
+            : "7 dias grátis · Cancele quando quiser · Sem fidelidade"}
         </p>
       </div>
 
@@ -151,5 +164,13 @@ export default function PlansPage() {
         O acesso ao sistema é liberado imediatamente após a confirmação.
       </p>
     </div>
+  )
+}
+
+export default function PlansPage() {
+  return (
+    <Suspense fallback={null}>
+      <PlansContent />
+    </Suspense>
   )
 }

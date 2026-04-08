@@ -45,15 +45,23 @@ export const authOptions: AuthOptions = {
           select: { plan: true, planExpiresAt: true, trialEndsAt: true },
         })
         if (dbUser) {
-          // Check if plan expired
           const now = new Date()
-          const expired =
+
+          // Plano pago expirou
+          const planExpired =
             dbUser.plan !== "FREE" &&
-            dbUser.planExpiresAt &&
+            dbUser.planExpiresAt != null &&
             dbUser.planExpiresAt < now
 
-          token.plan = expired ? "FREE" : dbUser.plan
+          // Trial expirou (FREE sem plano pago)
+          const trialExpired =
+            dbUser.plan === "FREE" &&
+            dbUser.trialEndsAt != null &&
+            dbUser.trialEndsAt < now
+
+          token.plan = planExpired ? "FREE" : dbUser.plan
           token.trialEndsAt = dbUser.trialEndsAt?.toISOString() ?? null
+          token.trialExpired = trialExpired
         }
       }
       return token
@@ -63,6 +71,7 @@ export const authOptions: AuthOptions = {
         (session.user as any).id = token.id
         ;(session.user as any).plan = token.plan
         ;(session.user as any).trialEndsAt = token.trialEndsAt
+        ;(session.user as any).trialExpired = token.trialExpired
       }
       return session
     },
