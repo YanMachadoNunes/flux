@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import {
   Users,
   Calendar,
@@ -15,6 +16,8 @@ import { RevenueChart } from "./components/RevenueChart";
 import styles from "./home.module.css";
 
 export default async function DashboardPage() {
+  const clinicId = await getClinicId();
+
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
   const endOfDay = new Date();
@@ -28,22 +31,23 @@ export default async function DashboardPage() {
     recentAppointments,
     recentPatients,
   ] = await Promise.all([
-    prisma.patient.count(),
-    prisma.procedure.count(),
+    prisma.patient.count({ where: { clinicId } }),
+    prisma.procedure.count({ where: { clinicId } }),
     prisma.appointment.count({
-      where: { dateTime: { gte: startOfDay, lte: endOfDay } },
+      where: { clinicId, dateTime: { gte: startOfDay, lte: endOfDay } },
     }),
     prisma.financialRecord.findMany({
-      where: { type: "INCOME" },
+      where: { clinicId, type: "INCOME" },
       orderBy: { dueDate: "asc" },
     }),
     prisma.appointment.findMany({
-      where: { dateTime: { gte: startOfDay, lte: endOfDay } },
+      where: { clinicId, dateTime: { gte: startOfDay, lte: endOfDay } },
       orderBy: { dateTime: "asc" },
       include: { patient: true },
       take: 6,
     }),
     prisma.patient.findMany({
+      where: { clinicId },
       orderBy: { createdAt: "desc" },
       take: 5,
     }),

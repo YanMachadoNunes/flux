@@ -42,18 +42,16 @@ export const authOptions: AuthOptions = {
       if (token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
-          select: { plan: true, planExpiresAt: true, trialEndsAt: true },
+          select: { plan: true, planExpiresAt: true, trialEndsAt: true, clinicId: true },
         })
         if (dbUser) {
           const now = new Date()
 
-          // Plano pago expirou
           const planExpired =
             dbUser.plan !== "FREE" &&
             dbUser.planExpiresAt != null &&
             dbUser.planExpiresAt < now
 
-          // Trial expirou (FREE sem plano pago)
           const trialExpired =
             dbUser.plan === "FREE" &&
             dbUser.trialEndsAt != null &&
@@ -62,6 +60,7 @@ export const authOptions: AuthOptions = {
           token.plan = planExpired ? "FREE" : dbUser.plan
           token.trialEndsAt = dbUser.trialEndsAt?.toISOString() ?? null
           token.trialExpired = trialExpired
+          token.clinicId = dbUser.clinicId ?? null
         }
       }
       return token
@@ -72,6 +71,7 @@ export const authOptions: AuthOptions = {
         ;(session.user as any).plan = token.plan
         ;(session.user as any).trialEndsAt = token.trialEndsAt
         ;(session.user as any).trialExpired = token.trialExpired
+        ;(session.user as any).clinicId = token.clinicId
       }
       return session
     },

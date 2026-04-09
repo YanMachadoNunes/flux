@@ -7,6 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ── CLÍNICA (tenant) ──────────────────────────────────────────────────────────
+
+model Clinic {
+  id               String            @id @default(uuid())
+  name             String
+  createdAt        DateTime          @default(now())
+  users            User[]
+  patients         Patient[]
+  procedures       Procedure[]
+  appointments     Appointment[]
+  financialRecords FinancialRecord[]
+  transactions     Transaction[]
+}
+
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 
 model User {
@@ -19,6 +33,8 @@ model User {
   trialEndsAt     DateTime?
   planExpiresAt   DateTime?
   asaasCustomerId String?
+  clinicId        String?
+  clinic          Clinic?       @relation(fields: [clinicId], references: [id])
   createdAt       DateTime      @default(now())
   subscription    Subscription?
 }
@@ -36,21 +52,27 @@ model Subscription {
   updatedAt        DateTime  @updatedAt
 }
 
-// ── CLÍNICA ───────────────────────────────────────────────────────────────────
+// ── CLÍNICA — dados isolados por tenant ───────────────────────────────────────
 
 model Patient {
   id           String        @id @default(uuid())
+  clinicId     String
+  clinic       Clinic        @relation(fields: [clinicId], references: [id])
   name         String
   phone        String?
   email        String?
-  cpf          String?       @unique
+  cpf          String?
   birthDate    DateTime?
   createdAt    DateTime      @default(now())
   appointments Appointment[]
+
+  @@unique([clinicId, cpf])
 }
 
 model Procedure {
   id           String        @id @default(uuid())
+  clinicId     String
+  clinic       Clinic        @relation(fields: [clinicId], references: [id])
   name         String
   description  String?
   basePrice    Decimal       @db.Decimal(10, 2)
@@ -60,6 +82,8 @@ model Procedure {
 
 model Appointment {
   id          String           @id @default(uuid())
+  clinicId    String
+  clinic      Clinic           @relation(fields: [clinicId], references: [id])
   dateTime    DateTime
   status      String           @default("AGENDADO")
   notes       String?
@@ -74,6 +98,8 @@ model Appointment {
 
 model FinancialRecord {
   id            String       @id @default(cuid())
+  clinicId      String
+  clinic        Clinic       @relation(fields: [clinicId], references: [id])
   description   String
   amount        Decimal
   type          String
@@ -87,6 +113,8 @@ model FinancialRecord {
 
 model Transaction {
   id          String   @id @default(cuid())
+  clinicId    String
+  clinic      Clinic   @relation(fields: [clinicId], references: [id])
   description String
   amount      Float
   type        String

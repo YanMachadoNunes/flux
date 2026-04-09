@@ -27,15 +27,23 @@ export async function POST(req: NextRequest) {
     const trialEndsAt = new Date()
     trialEndsAt.setDate(trialEndsAt.getDate() + 7)
 
-    await prisma.user.create({
-      data: {
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        password: hashed,
-        plan: "FREE",
-        trialUsed: true,
-        trialEndsAt,
-      },
+    // Cria clínica e usuário numa transação
+    await prisma.$transaction(async (tx) => {
+      const clinic = await tx.clinic.create({
+        data: { name: `Clínica de ${name.trim()}` },
+      })
+
+      await tx.user.create({
+        data: {
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          password: hashed,
+          plan: "FREE",
+          trialUsed: true,
+          trialEndsAt,
+          clinicId: clinic.id,
+        },
+      })
     })
 
     return NextResponse.json({ success: true })

@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -6,7 +7,8 @@ import { updateProcedure } from "@/app/lib/actions";
 import styles from "../../new/form.module.css";
 
 export default async function EditProcedurePage({ params }: { params: { id: string } }) {
-  const proc = await prisma.procedure.findUnique({ where: { id: params.id } });
+  const clinicId = await getClinicId();
+  const proc = await prisma.procedure.findUnique({ where: { id: params.id, clinicId } });
   if (!proc) notFound();
 
   const action = updateProcedure.bind(null, proc.id);

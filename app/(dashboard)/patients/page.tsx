@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { prisma } from "@/app/lib/prisma"; // Conectando ao banco
+import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import styles from "./patients.module.css";
 
 export default async function PatientsPage() {
-  // BUSCANDO DADOS REAIS DO BANCO
+  const clinicId = await getClinicId();
   const patients = await prisma.patient.findMany({
-    orderBy: {
-      name: "asc", // Ordenar por nome (A-Z)
-    },
+    where: { clinicId },
+    orderBy: { name: "asc" },
   });
 
   return (

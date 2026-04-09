@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import { createTransaction } from "@/app/lib/actions";
 import { CashFlowChart } from "./CashFlowChart";
 import {
@@ -12,7 +13,9 @@ import {
 import styles from "./financial.module.css";
 
 export default async function FinancialPage() {
+  const clinicId = await getClinicId();
   const records = await prisma.financialRecord.findMany({
+    where: { clinicId },
     orderBy: { dueDate: "desc" },
     take: 60,
   });

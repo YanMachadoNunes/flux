@@ -1,14 +1,17 @@
 import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Edit2, Clock, DollarSign, FileText, Calendar } from "lucide-react";
 import styles from "./detail.module.css";
 
 export default async function ProcedureDetailPage({ params }: { params: { id: string } }) {
+  const clinicId = await getClinicId();
   const proc = await prisma.procedure.findUnique({
-    where: { id: params.id },
+    where: { id: params.id, clinicId },
     include: {
       appointments: {
+        where: { clinicId },
         include: { patient: true },
         orderBy: { dateTime: "desc" },
         take: 5,

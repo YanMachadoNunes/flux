@@ -4,6 +4,7 @@ import { prisma } from "../lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { getClinicId } from "../lib/clinic";
 
 const PatientSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
@@ -42,6 +43,7 @@ const Transaction = z.object({
 });
 
 export async function createPatient(formData: FormData): Promise<void> {
+  const clinicId = await getClinicId();
   const rawData = Object.fromEntries(formData.entries());
   const validated = PatientSchema.safeParse(rawData);
 
@@ -49,7 +51,7 @@ export async function createPatient(formData: FormData): Promise<void> {
 
   const { email, ...rest } = validated.data;
   await prisma.patient.create({
-    data: { ...rest, email: email || null },
+    data: { ...rest, email: email || null, clinicId },
   });
 
   revalidatePath("/patients");
@@ -57,6 +59,7 @@ export async function createPatient(formData: FormData): Promise<void> {
 }
 
 export async function createAppointment(formData: FormData): Promise<void> {
+  const clinicId = await getClinicId();
   const rawData = Object.fromEntries(formData.entries());
   const validated = AppointmentSchema.safeParse(rawData);
 
@@ -71,6 +74,7 @@ export async function createAppointment(formData: FormData): Promise<void> {
       dateTime: combinedDateTime,
       status: "AGENDADO",
       notes: rest.notes ? `[${type}] ${rest.notes}` : type,
+      clinicId,
     },
   });
 
@@ -79,6 +83,7 @@ export async function createAppointment(formData: FormData): Promise<void> {
 }
 
 export async function createProcedure(formData: FormData): Promise<void> {
+  const clinicId = await getClinicId();
   const rawData = Object.fromEntries(formData.entries());
   const validated = ProcedureSchema.safeParse(rawData);
 
@@ -86,7 +91,7 @@ export async function createProcedure(formData: FormData): Promise<void> {
 
   const { price, ...rest } = validated.data;
   await prisma.procedure.create({
-    data: { ...rest, basePrice: price },
+    data: { ...rest, basePrice: price, clinicId },
   });
 
   revalidatePath("/procedures");
@@ -94,6 +99,7 @@ export async function createProcedure(formData: FormData): Promise<void> {
 }
 
 export async function updateProcedure(id: string, formData: FormData): Promise<void> {
+  const clinicId = await getClinicId();
   const rawData = Object.fromEntries(formData.entries());
   const validated = ProcedureSchema.safeParse(rawData);
 
@@ -101,7 +107,7 @@ export async function updateProcedure(id: string, formData: FormData): Promise<v
 
   const { price, ...rest } = validated.data;
   await prisma.procedure.update({
-    where: { id },
+    where: { id, clinicId }, // garante que o procedimento é desta clínica
     data: { ...rest, basePrice: price },
   });
 
@@ -110,6 +116,7 @@ export async function updateProcedure(id: string, formData: FormData): Promise<v
 }
 
 export async function createTransaction(formData: FormData): Promise<void> {
+  const clinicId = await getClinicId();
   const rawData = Object.fromEntries(formData.entries());
   const validated = Transaction.safeParse(rawData);
 
@@ -122,6 +129,7 @@ export async function createTransaction(formData: FormData): Promise<void> {
       dueDate: new Date(validated.data.date),
       amount: Number(validated.data.amount.replace(",", ".")),
       status: "PAID",
+      clinicId,
     },
   });
 

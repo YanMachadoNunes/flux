@@ -1,11 +1,13 @@
 import { prisma } from "../../../lib/prisma";
+import { getClinicId } from "../../../lib/clinic";
 import { createAppointment } from "../../../lib/actions";
 import Link from "next/link";
-import styles from "../agenda.module.css"; // Reutilizando o estilo base
+import styles from "../agenda.module.css";
 
 export default async function NewAppointmentPage() {
-  // Busca pacientes para preencher o dropdown
+  const clinicId = await getClinicId();
   const patients = await prisma.patient.findMany({
+    where: { clinicId },
     orderBy: { name: "asc" },
   });
 

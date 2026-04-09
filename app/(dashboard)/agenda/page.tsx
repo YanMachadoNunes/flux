@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
+import { getClinicId } from "@/app/lib/clinic";
 import { Plus, Calendar, Clock, User } from "lucide-react";
 import { AgendaCalendar } from "./AgendaCalendar";
 import styles from "./agenda.module.css";
@@ -27,6 +28,7 @@ function fmt2(n: number) {
 }
 
 export default async function AgendaPage({ searchParams }: Props) {
+  const clinicId = await getClinicId();
   const params = await searchParams;
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${fmt2(today.getMonth() + 1)}-${fmt2(today.getDate())}`;
@@ -42,12 +44,12 @@ export default async function AgendaPage({ searchParams }: Props) {
 
   const [appointments, monthAppointments] = await Promise.all([
     prisma.appointment.findMany({
-      where: { dateTime: { gte: startOfDay, lte: endOfDay } },
+      where: { clinicId, dateTime: { gte: startOfDay, lte: endOfDay } },
       orderBy: { dateTime: "asc" },
       include: { patient: true, procedure: true },
     }),
     prisma.appointment.findMany({
-      where: { dateTime: { gte: startOfMonth, lte: endOfMonth } },
+      where: { clinicId, dateTime: { gte: startOfMonth, lte: endOfMonth } },
       select: { dateTime: true },
     }),
   ]);
