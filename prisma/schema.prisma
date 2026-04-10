@@ -28,7 +28,7 @@ model User {
   id              String        @id @default(uuid())
   name            String
   email           String        @unique
-  password        String
+  password        String?
   plan            String        @default("FREE")
   trialUsed       Boolean       @default(false)
   trialEndsAt     DateTime?
