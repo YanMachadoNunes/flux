@@ -39,7 +39,6 @@ export async function POST(req: NextRequest) {
           email: email.toLowerCase().trim(),
           password: hashed,
           plan: "FREE",
-          trialUsed: true,
           trialEndsAt,
           clinicId: clinic.id,
         },
