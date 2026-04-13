@@ -34,9 +34,10 @@ export const PLANS: Record<PlanType, Plan> = {
     features: [
       "Até 500 pacientes",
       "Agendamentos ilimitados",
-      "Prontuário básico",
+      "Prontuário completo",
       "Dashboard financeiro",
       "Controle de procedimentos",
+      "Relatório mensal",
       "Suporte por e-mail",
     ],
   },

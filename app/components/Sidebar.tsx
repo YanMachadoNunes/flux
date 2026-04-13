@@ -14,6 +14,7 @@ import {
   User,
   X,
   LogOut,
+  BarChart2,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import styles from "./sidebar.module.css";
@@ -25,6 +26,7 @@ const menuItems = [
   { icon: Users,      label: "Pacientes",       path: "/patients" },
   { icon: Stethoscope,label: "Procedimentos",   path: "/procedures" },
   { icon: DollarSign, label: "Financeiro",      path: "/financial" },
+  { icon: BarChart2,  label: "Relatórios",      path: "/reports" },
   { icon: Settings,   label: "Configurações",   path: "/settings" },
 ];
 
