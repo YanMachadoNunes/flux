@@ -7,7 +7,7 @@ export default withAuth(
     const token = req.nextauth.token as any
 
     // Páginas que não precisam de verificação de trial
-    const freePaths = ["/plans", "/login", "/register"]
+    const freePaths = ["/plans", "/login", "/register", "/onboarding"]
     if (freePaths.some((p) => pathname.startsWith(p))) {
       return NextResponse.next()
     }
@@ -51,6 +51,6 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    "/((?!login|register|plans|api/auth|api/asaas-webhook|_next|favicon\\.ico).*)",
+    "/((?!login|register|plans|onboarding|api/auth|api/asaas-webhook|_next|favicon\\.ico).*)",
   ],
 }

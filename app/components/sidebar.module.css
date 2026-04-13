@@ -222,6 +222,26 @@
   letter-spacing: 0.04em;
 }
 
+.logoutBtn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+  margin-left: auto;
+}
+
+.logoutBtn:hover {
+  color: var(--error);
+  background: color-mix(in srgb, var(--error) 10%, transparent);
+}
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   .sidebar {

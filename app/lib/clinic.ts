@@ -6,6 +6,6 @@ import { redirect } from "next/navigation"
 export async function getClinicId(): Promise<string> {
   const session = await getServerSession(authOptions)
   const clinicId = (session?.user as any)?.clinicId as string | undefined
-  if (!clinicId) redirect("/login")
+  if (!clinicId) redirect("/onboarding")
   return clinicId
 }

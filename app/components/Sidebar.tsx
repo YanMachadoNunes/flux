@@ -13,7 +13,9 @@ import {
   ChevronRight,
   User,
   X,
+  LogOut,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 import styles from "./sidebar.module.css";
 import { useSidebar } from "../context/SidebarContext";
 
@@ -92,10 +94,19 @@ export function Sidebar() {
             <div className={styles.avatar}>
               <User size={16} />
             </div>
-            <div className={styles.userDetails}>
-              <span className={styles.userName}>Doutor</span>
-              <span className={styles.userMeta}>Profissional</span>
-            </div>
+            {!isCollapsed && (
+              <div className={styles.userDetails}>
+                <span className={styles.userName}>Doutor</span>
+                <span className={styles.userMeta}>Profissional</span>
+              </div>
+            )}
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className={styles.logoutBtn}
+              title="Sair"
+            >
+              <LogOut size={15} />
+            </button>
           </div>
         </div>
       </aside>
